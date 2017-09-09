@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Vegeta UI Toolkit</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
+  <!-- jQuery needed for semantic UI -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+  <!-- Semantic UI CDN -->
+  <link rel="stylesheet" type="text/css" href="//oss.maxcdn.com/semantic-ui/2.1.6/semantic.min.css">
+  <script type="text/javascript" src="//oss.maxcdn.com/semantic-ui/2.1.6/semantic.min.js"></script>
+
+  <style>
+	.hiddenDiv {display:none;}
+  </style>
+
+</head>
+
+<body>
+
+    <!-- BEGIN main semantic container div -->
+    <div class="ui container">
+
+    <!-- Top logo and layout title -->
+    <div class="ui raised olive segment">
+    <div class="ui two column middle aligned very relaxed stackable grid">
+             <div class="column">
+                    <a href="/"><i class="big configure icon"></i></a>
+             </div>
+             <div class="left aligned column">
+                    <h2 class="ui right floated header"><a href="/">Vegeta UI Toolkit</a></h2>
+             </div>
+    </div>
+    </div>
+
+    <!-- Main page content -->
+    <div style="min-height:600px;">
+          <div class="body">
+
+			<h1 class="ui header">Vegeta Load Testing</h1>
+			<div class="ui divider"></div>	
+		
+			<div class="ui four steps">
+			  <div id="step1" class="active step"> <!-- put completed instead of active in the class css when step done -->
+			    <i class="browser icon"></i>
+			    <div class="content">
+			      <div class="title">Target</div>
+			      <div class="description">Choose the URL to load test</div>
+			    </div>
+			  </div>
+			  <div id="step2" class="step">
+			  	<i class="options icon"></i>
+			    <div class="content">
+			      <div class="title">Parameters</div>
+			      <div class="description">Choose testing parameters</div>
+			    </div>
+			  </div>
+			  <div id="step3" class="step">
+			  	<i class="lightning icon"></i>
+			    <div class="content">
+			      <div class="title">Confirmation</div>
+			      <div class="description">Confirm and initiate the load test</div>
+			    </div>
+			  </div>
+			  <div id="step4" class="step">
+			  	<i class="bar chart icon"></i>
+			    <div class="content">
+			      <div class="title">Results</div>
+			      <div class="description">View the results</div>
+			    </div>
+			  </div>	  
+			</div>
+			
+			<form id="vegetaForm" class="ui form" target="#">
+		
+			<div id="divStep1"><!-- BEGIN: div id step 1 -->	  
+			   <div class="ui error message"></div>
+			  <div class="fields">
+				  <div class="four wide field">
+				    <label>Request Method</label>
+				    <select class="ui fluid search dropdown" name="attackMethod" id="attackMethod">
+						<option value="GET">GET</option>
+						<option value="POST">POST</option>
+					</select>
+				  </div>	  
+				  <div class="twelve wide field">
+				    <label>Target URL</label>
+				    <input type="text" name="targetUrl" id="targetUrl" placeholder="http://target url">
+				  </div>		  
+			  </div><!-- END two fields -->
+
+			  <div class="fields">		
+				<div class="field">
+				    <div class="ui checkbox">
+				      <input id="ignoreInvalidCert" value="y" type="checkbox" tabindex="0" >
+				      <label>Ignore HTTPS certificate warnings</label>
+				    </div>
+				</div>	  			
+			  </div><!-- END ignore certificate warnings -->
+
+			  <div class="ui info message">
+			  	Please note that if you use Vegeta to load test web pages, it only tests the responsiveness of the document specified by the URL.<br/>It will not load-test the resources (javascript, css, images) referenced by that document.
+			  </div>		
+			  
+			  <div class="paramFieldsDiv hiddenDiv">
+			  <div class="fields">
+				  <div class="four wide field">
+				    <label>Optional Param Name</label>
+						<input type="text" name="bodyParamName" id="bodyParamName" placeholder="">
+				  </div>	  
+				  <div class="four wide field">
+				    <label>Optional Param Value</label>
+				    <input type="text" name="bodyParamVal" id="bodyParamVal" placeholder="">
+				  </div>	
+				  <div class="eight wide field">
+					<label>&nbsp;</label>
+				    <button class="ui button addParamToRequest" type="button">Add</button>
+				  </div>	  					  
+			  </div><!-- END optional param addition fields -->	
+			  	<div class="ui olive message additionalBodyParamsMsg">
+			  		No additional parameters.
+			  	</div>						
+			  </div>
+			  <input type="hidden" name="bodyParams" id="bodyParams" value="" />
+				
+			  <div class="ui hidden divider"></div>
+		
+			  <button class="ui button goToStep2" type="button">Next</button>
+			</div><!-- END: div id step 1 -->
+			
+			<div id="divStep2"><!-- BEGIN: div id step 2 -->
+			  <div class="two fields">
+				  <div class="field">
+				    <label>Number of Concurrent Requests</label>
+					<select class="ui fluid search dropdown" name="concurrentRequests" id="concurrentRequests">
+					<option value="10">10</option>
+					<option value="20">20</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="200">200</option>
+					<option value="300">300</option>
+					<option value="400">400</option>
+					<option value="500">500</option>
+					<option value="600">600</option>
+					<option value="800">800</option>
+					<option value="1000">1000</option>
+					<option value="1500">1500</option>
+					<option value="2000">2000</option>
+					</select>
+				  </div>
+				  <div class="field">
+				    <label>Duration of Test</label>
+					<select class="ui fluid search dropdown" name="duration" id="duration">
+					<option value="10">10 seconds</option>
+					<option value="20">20 seconds</option>
+					<option value="30">30 seconds</option>
+					<option value="60">1 minute</option>
+					<option value="120">2 minutes</option>
+					<option value="300">5 minutes</option>
+					<option value="600">10 minutes</option>
+					<option value="900">15 minutes</option>
+					<option value="1200">20 minutes</option>
+					<option value="1800">30 minutes</option>
+					<option value="2700">45 minutes</option>
+					<option value="3600">One hour</option>
+					<option value="7200">Two hours</option>
+					</select>
+				  </div>	  
+			  </div>
+		
+			  <div class="two fields">
+				  <div class="field">
+				    <label>Request Timeout</label>
+					<select class="ui fluid search dropdown" name="requestTimeout" id="requestTimeout">
+					<option value="5">5 seconds</option>
+					<option value="10">10 seconds</option>
+					<option value="15">15 seconds</option>
+					<option value="20">20 seconds</option>
+					<option value="25">25 seconds</option>
+					<option value="30">30 seconds</option>
+					<option value="45">45 seconds</option>
+					<option value="60">1 minute</option>
+					<option value="120">2 minutes</option>
+					<option value="180">3 minutes</option>
+					<option value="240">4 minutes</option>
+					<option value="300">5 minutes</option>
+					<option value="600">10 minutes</option>
+					</select>
+				  </div>
+				  <div class="field">
+				    <label>Parallel CPU Workers</label>
+					<select class="ui fluid search dropdown" name="workers" id="workers">
+					<option value="1">1 worker</option>
+					<option value="2">2 workers</option>
+					<option value="3">3 workers</option>
+					<option value="4">4 workers</option>
+					<option value="5">5 workers</option>
+					<option selected="selected" value="10">10 workers</option>
+					<option value="20">20 workers</option>
+					<option value="30">30 workers</option>
+					<option value="40">40 workers</option>
+					</select>
+				  </div>	  
+			  </div>	  
+			  
+			  <div class="fields">
+		
+				  <div class="field">
+				    <div class="ui checkbox">
+				      <input id="differentConnections" checked="checked" value="y" type="checkbox" tabindex="0">
+				      <label>Use separate connections for each request (keep-alive = false)</label>
+				    </div>
+				  </div>	  	
+		
+			  </div>
+			  
+			  <button class="ui button goToStep1" type="button">Previous</button>
+			  <button id="from2" class="ui button goToStep3" type="button">Next</button>
+			</div><!-- END: div id step 2 -->
+		
+			<div id="divStep3"><!-- BEGIN: div id step 3 -->
+			  
+				<div id="divVegetaStartError" class="ui negative message hidden">
+				  <i class="close icon"></i>
+				  <div class="header">Could not start Vegeta Load Test: <span id="spanStartFailedReason"></span></div>
+				  <p><span id="spanStartFailedDetails"></span></p>
+				</div>
+		
+				<div class="ui padded segment">
+				  <h2 class="ui header">Review the load test settings</h2>			
+				  <div class="ui divider"></div>				
+				  <div class="ui olive message reviewParams"></div>				
+				  <p>When you're ready to begin the load testing, confirm by clicking Next</p>
+				</div>
+		
+			  <button id="from3" class="ui button goToStep2" type="button">Previous</button>
+			  <button class="ui button goToStep4" type="button">Next</button>
+			</div><!-- END: div id step 3 -->
+		
+			<div id="divStep4"><!-- BEGIN: div id step 4 -->
+			  		
+		
+				<div class="ui padded segment">
+				  <h2 class="ui header">Load test results</h2>
+				  <div class="ui divider"></div>
+				  <p><a target="_blank" href="/results">Check the test results plot chart</a></p>
+		
+			      <div class="ui hidden divResults">
+			      	  <p>Requests (total/success rate percentage): <span class="spanReqs"></span></p>
+				      <p>50 percentile (ms): <span class="span50P"></span></p>
+				      <p>95 percentile (ms): <span class="span95P"></span></p>
+				      <p>99 percentile (ms): <span class="span99P"></span></p>
+		
+					  <!-- BEGIN: results histogram -->
+					  <div class="ui inverted segment histogramDiv">
+						  <pre id="histogramPre">
+						  </pre>
+					  </div>
+					  <!-- END: results histogram -->
+		
+			      </div>
+		
+		
+				</div>
+		
+			  <button id="from4" class="ui button goToStep3" type="button">Previous</button>
+			  <button class="ui button goToMainMenu" type="button">Main Menu</button>
+			</div><!-- END: div id step 4 -->	
+		
+			</form>
+		
+		
+		
+		</div><!-- end body div -->
+		
+		
+		<!-- BEGIN: load test modal -->
+		<div id="loadTestModal" class="ui basic modal">
+		  <!-- i class="close icon"></i -->
+		  <div class="header">Vegeta Load Test <span id="spanTitleStatus">Initiated</span></div>
+			  
+			  <div class="image content">
+			    <div class="image"><i class="angle double right icon"></i></div>
+			    <div class="description content">
+			      <p>Time Elapsed: <span id="spanTimeElapsed"></span></p>
+			      <div class="ui hidden divResults">
+			      	  <p>Requests (total/success rate percentage): <span class="spanReqs"></span></p>
+				      <p>50 percentile (ms): <span class="span50P"></span></p>
+				      <p>95 percentile (ms): <span class="span95P"></span></p>
+				      <p>99 percentile (ms): <span class="span99P"></span></p>
+			      </div>
+			    </div>
+			  </div>
+		
+				  <div class="content">
+				  <div class="ui inverted segment">
+				  <div id="loadTestProgress" class="ui inverted progress warning">
+				    <div class="bar"><div class="progress"></div></div>
+				    <div class="label">Load Testing Progress</div>
+				  </div>
+				  </div>
+				  </div>	  
+		
+			  <div class="actions">
+			    <div class="two fluid ui inverted buttons">
+			      <div id="btnModalCancelTest" class="ui red basic inverted button">
+			        <i class="remove icon"></i>Cancel Test
+			      </div>
+			      <div id="btnModalTestCompleted" class="ui green basic inverted disabled button">
+			        <i class="checkmark icon"></i>Continue        
+			      </div>
+			    </div>
+			  </div>
+		</div>
+		<!-- END: load test modal -->
+		
+		<!-- BEGIN: this modal asks the user if they want to start a new test or go to the results -->
+		<div id="newTestOrOldResultsModal" class="ui basic modal">
+		  <!-- i class="close icon"></i -->
+		  <div class="header">Previous Results Available</div>
+			  
+			  <div class="image content">
+			    <div class="image"><i class="warning  double icon"></i></div>
+			    <div class="description content">
+			      <p>The application has detected that previous results are still residing on the server.</p>
+			      <p>Please choose between displaying previous results and starting a new test.</p>
+			      <p>Note that if you decide to run a new test, the previous results will be erased.</p>
+			    </div>
+			  </div>
+		
+			  <div class="actions">
+			    <div class="two fluid ui inverted buttons">
+			      <div id="btnModalPreviousResults" class="ui yellow basic inverted button">
+			        <i class="bar chart icon"></i>Show Previous Results
+			      </div>
+			      <div id="btnModalStartNewTest" class="ui green basic inverted button">
+			        <i class="rocket icon"></i>Start New Test        
+			      </div>
+			    </div>
+			  </div>
+		</div>
+		<!-- END: this modal asks the user if they want to start a new test or go to the results -->
+    </div>
+	<!-- END: Main content -->
+
+    <!-- Page Footer -->
+    <div class="ui raised olive segment">
+            <p>This is a web UI wrapper over Vegeta functionality.</p>
+    </div>
+
+    </div><!-- END main semantic container div -->
+
+
+
+<script>
+
+var PROCESS_STARTED = false;
+var WS_CONN;
+
+$( document ).ready(function() {
+    
+    // hide all steps except one
+    $('#divStep1').show();
+	prepareStep1();
+	
+    $('#divStep2').hide();
+    $('#divStep3').hide();
+    $('#divStep4').hide();
+
+    var hasResultsAlready = {{.HasResultsAlready}};
+
+     if (hasResultsAlready == false) {
+
+     	// clean the test modal
+     	cleanModal();	
+     } else {
+
+     	// present the user with a yes and no modal where they need to choose between displaying 
+     	// the previous results or starting fresh
+     	promptNewTestOrOldResultsModal();
+     }
+     
+});
+
+// event to close any semantic ui dismissable message div
+$('.message .close').on('click', function() { $(this).closest('.message').hide(); });
+
+
+// form validation
+$('.ui.form').form({
+    fields: {
+      targetUrl : {
+			        identifier  : 'targetUrl',
+			        rules: [
+			          {
+			            type   : 'empty',
+			            prompt : 'The target url must be specified (e.g. http://localhost/etc)'
+			          }
+			        ]
+			      }
+}
+  });
+
+// steps navigation
+
+$('.goToStep1').on('click', function(event) {
+
+	var buttonId = event.target.id;
+	
+	$('#divStep2').hide();
+    $('#step2').removeClass("active step").removeClass("completed step").addClass("step");
+    $('#step1').removeClass("completed").addClass("active");
+    $('#divStep1').show();
+	
+});
+
+
+$('.goToStep2').on('click', function(event) {
+
+	var buttonId = event.target.id;
+
+	isFormValid = $("#vegetaForm").form('is valid');
+	if (isFormValid) {
+		
+		if (buttonId == "from3") {
+
+			$("#divStep3").hide();
+		    $('#step3').removeClass("active step").removeClass("completed step").addClass("step");    	
+		    $('#step2').removeClass("completed").addClass("active");    	
+		    $('#divStep2').show();
+		    	    	  	
+
+		} else {
+
+			// just in case check it it's valid URL
+
+			$("#divStep1").hide();	    
+		    $('#step1').removeClass("active step").addClass("completed step");        	 
+		    $('#step2').addClass("active");
+		    $('#divStep2').show();
+
+		}
+
+	} else {
+		// don't proceed to next step and display the error messages if needed
+		 $("#vegetaForm").form('validate form');
+	}
+
+});
+
+$('.goToStep3').on('click', function(event) {
+
+	var buttonId = event.target.id;
+
+	prepareStep3();	
+	if (buttonId == "from2") {
+		$('#divStep2').hide();
+		$('#step2').removeClass("active step").addClass("completed step");    
+	    $('#step3').addClass("active");
+	    $('#divStep3').show();  
+	} else { 
+		$('#divStep4').hide();
+		$('#step4').removeClass("active step").removeClass("completed step").addClass("step");    
+	    $('#step3').removeClass("completed").addClass("active");
+	    $('#divStep3').show();  		
+	}	
+});
+
+$('.goToStep4').on('click', function(event) {
+
+	console.log("checking if we can run the test");
+
+	startVegetaAttack(function(allGood, status) {
+
+		// start the process if not already started
+		if (allGood) {
+						
+			cleanModal();
+
+			$('#loadTestModal').modal('setting', 'closable', false).modal('show');
+
+			// initiate the websocket connection
+			checkLoadTestStatus();
+
+		} else {
+
+			console.log("could not start the test: " + status);
+		}		
+
+	});
+
+
+
+});
+
+// Cancels the current test
+$('#btnModalCancelTest').on('click', function(event) {
+
+	$('#spanTitleStatus').html("Cancelled");
+	sendWSMessageRightAway("cancelTest");
+
+});
+
+// Takes the user to the results page
+$('#btnModalTestCompleted').on('click', function(event) {
+
+	$('#loadTestModal').modal('setting', 'closable', true).modal('hide');    
+
+	$('#divStep3').hide();
+	$('#step3').removeClass("active step").addClass("completed step");    
+    $('#step4').addClass("active");
+    $('#divStep4').show();   
+
+    // start the histogram ajax - this can be done asynch
+    $.post("/histogram").done(function(histogramContent) {
+    	document.getElementById('histogramPre').innerHTML = histogramContent;
+    });
+
+});
+
+// Takes the user to the main menu
+$('.goToMainMenu').on('click', function(event) {
+
+	window.location.href = "/";
+	
+});
+
+// For the first page "existing results choice" modal
+// Takes the user directly to the previous results
+$('#btnModalPreviousResults').on('click', function(event) {
+
+	$('#newTestOrOldResultsModal').modal('setting', 'closable', true).modal('hide');    
+
+	{{if .PreviousResults}}
+
+		// populate the test results
+		$('.spanReqs').html({{.PreviousResults.TotalRequests}} + "/" + {{.PreviousResults.SuccessRate}});
+		$('.span50P').html({{.PreviousResults.P50}});
+		$('.span95P').html({{.PreviousResults.P95}});
+		$('.span99P').html({{.PreviousResults.P99}});
+
+		// Hide the "Previous" button
+		$('#from4').hide()
+
+		$('.divResults').show();
+
+	{{end}}
+
+	$('#divStep1').hide();
+	$('#step1').removeClass("active step").addClass("completed step");    
+	$('#step2').removeClass("step").addClass("completed step");    
+	$('#step3').removeClass("step").addClass("completed step");    
+    $('#step4').addClass("active");
+    $('#divStep4').show();   
+
+    // start the histogram ajax - this can be done asynch
+    $.post("/histogram").done(function(histogramContent) {
+    	document.getElementById('histogramPre').innerHTML = histogramContent;
+    });
+	
+});
+
+// For the first page "existing results choice" modal
+// Takes the user directly to the previous results
+$('#btnModalStartNewTest').on('click', function(event) {
+	$('#newTestOrOldResultsModal').modal('setting', 'closable', true).modal('hide');    
+	cleanModal()
+});
+
+
+function prepareStep1() {
+	// Register onChange dropdown for the attackMethod
+ 	$("#attackMethod").change(function () {
+        var newVal = this.value;
+        if (newVal == "POST") {
+			$(".paramFieldsDiv").show();
+		} else if (newVal == "GET") {
+			$(".paramFieldsDiv").hide();
+		}
+    });	
+	
+	// Register the Add Optional Param button
+	$('.addParamToRequest').on('click', function(event) {
+		var optionalParamName = $("#bodyParamName").val();	
+		var optionalParamVal = $("#bodyParamVal").val();
+		if (optionalParamName != "" && optionalParamVal != "") {
+			var currentBodyParams = $("#bodyParams").val();	
+			if (currentBodyParams != "") {
+				currentBodyParams = currentBodyParams + "&amp;";
+			}
+			currentBodyParams = currentBodyParams + htmlEncode(optionalParamName) + "=" + htmlEncode(optionalParamVal);
+			$("#bodyParams").val(currentBodyParams);
+			$(".additionalBodyParamsMsg").html(currentBodyParams);
+		}
+		$("#bodyParamName").val("");
+		$("#bodyParamVal").val("");
+	});	
+}
+
+function prepareStep3() {
+	// Load the "reviewParams" class message section with the current parameters
+	var bodyParams = ($("#attackMethod").val() == "GET") ? "" : ("<strong>Body:</strong> " + htmlEncode($("#bodyParams").val()) + "</br>");
+	var currentParametersSummary = "<strong>Target URL:</strong> " + $("#targetUrl").val() + "</br>"+
+		"<strong>Request Method:</strong> " + $("#attackMethod").val() + "</br>"+
+		bodyParams+
+		"<strong>Concurrent Requests:</strong> " + $("#concurrentRequests").val() + "</br>"+
+		"<strong>Duration of Test:</strong> " + $("#duration").val() + " seconds</br>"+
+		"<strong>Number of CPU Workers:</strong> " + $("#workers").val() + " seconds</br>"+
+		"<strong>Request Timeout:</strong> " + $("#requestTimeout").val() + " seconds</br>";
+	$('.reviewParams').html(currentParametersSummary);
+}
+
+function startVegetaAttack(callbackFunc) {
+
+	// gather load test parameters
+	var paramAttackMethod = $("#attackMethod").val();	
+	var paramTargetURL = $("#targetUrl").val();	
+	var paramBodyParams = $("#bodyParams").val();	
+	var paramRequestsPerSecond = $("#concurrentRequests").val();	
+	var paramDuration = $("#duration").val();
+	var paramRequestTimeout =  $("#requestTimeout").val();
+	var paramWorkers =  $("#workers").val();
+	var paramDifferentConnections = $("#differentConnections").prop('checked') ? $("#differentConnections").val() : "n";
+	var paramIgnoreInvalidCert =  $("#ignoreInvalidCert").prop('checked') ? $("#ignoreInvalidCert").val() : "n";
+
+	// run the AJAX call to initiate the attack
+
+	$.post("/start",{ attackMethod: paramAttackMethod, targetURL:paramTargetURL, bodyParams: paramBodyParams, requestsPerSecond:paramRequestsPerSecond, duration:paramDuration, requestTimeout:paramRequestTimeout, workers:paramWorkers, differentConnections:paramDifferentConnections, 
+		ignoreInvalidCert:paramIgnoreInvalidCert}).done(function( msg ) {
+
+		status = msg.Status
+		message = msg.Message 
+
+		var allGood = false;   	
+    	
+    	// if the status code is not "OK" then reset the PROCESS_STARTED variable
+    	if (message !== "OK") {
+
+    		allGood = false;
+
+    		$("#spanStartFailedReason").html(message);
+			
+			htmlMessage = message.replace(/(?:\r\n|\r|\n)/g, '<br />');    		
+    		$("#spanStartFailedDetails").html(htmlMessage);
+
+    		// hide the modal and display the problems
+    		$("#divVegetaStartError").show();
+    		$('#loadTestModal').modal('setting', 'closable', true).modal('hide');    		
+    		
+    	} else if (message == "OK") {
+
+    		allGood = true;
+
+    	} 
+
+    	callbackFunc(allGood, status);
+  	});
+
+}
+
+function checkLoadTestStatus() {
+
+	if (window["WebSocket"]) {
+        
+		var previousProgressPercentage = 0;
+		var currentProgressPercentage = 0;
+		
+		// initiate the connection
+        WS_CONN = new WebSocket("ws://{{.Host}}/status");
+        
+        // define the event handlers
+        WS_CONN.onclose = function(evt) {
+            
+            // enabled the continue button
+            $('#btnModalTestCompleted').removeClass("disabled");
+		    currentProgressPercentage = 0;
+			previousProgressPercentage = 100;
+			
+        }
+        WS_CONN.onmessage = function(evt) {
+            
+            var loadTestStatus = JSON.parse(evt.data);
+
+            console.log("message received: " + evt.data)
+
+            // calculate the elapsed time in seconds
+            var inSeconds = Math.floor(loadTestStatus.elapsed / 10);
+            $('#spanTimeElapsed').html(inSeconds + " seconds");
+
+            // calculate the progress bar value
+            var requestsCompleted = loadTestStatus.requestsCompleted
+            var totalRequests = loadTestStatus.totalRequests
+
+            currentProgressPercentage = requestsCompleted / totalRequests * 100;
+			if (currentProgressPercentage != previousProgressPercentage)	{
+				$('#loadTestProgress').progress({
+			  		percent: currentProgressPercentage
+				});				
+				previousProgressPercentage = currentProgressPercentage;
+			}
+
+
+			// if the status is complete, enable the continue button
+			if (loadTestStatus.status == "Completed" || loadTestStatus.status == "Cancelled") {				
+
+				if ($('#spanTitleStatus').html() !== "Cancelled") {
+					$('#spanTitleStatus').html("Completed");
+				}
+
+				// populate the test results
+				$('.spanReqs').html(loadTestStatus.requestsCompleted + "/" + loadTestStatus.successRate);
+				$('.span50P').html(loadTestStatus.p50);
+				$('.span95P').html(loadTestStatus.p95);
+				$('.span99P').html(loadTestStatus.p99);
+
+				$('.divResults').show();
+
+				// enabled the continue button and disable the cancel button
+            	$('#btnModalTestCompleted').removeClass("disabled");
+            	$('#btnModalCancelTest').addClass("disabled");
+            	
+			} else {
+
+				$('#divResults').hide();
+
+				if ($('#btnModalTestCompleted').hasClass("disabled") == false) {
+					$('#btnModalTestCompleted').addClass("disabled");
+				}
+				if ($('#btnModalCancelTest').hasClass("disabled") == true) {
+					$('#btnModalTestCompleted').removeClass("disabled");
+				}
+			}
+
+        }
+
+        // send the getStatus request
+        sendWSMessage("getStatus");
+
+    } else {
+        console.log("Your browser does not support WebSockets.");
+    }
+
+
+}
+
+function cleanModal() {
+
+	// disable the continue button and enable the cancel button
+	$('#spanTitleStatus').html("Initiated");
+	$('.divResults').hide();
+    $('#btnModalCancelTest').removeClass("disabled");
+    $('#btnModalTestCompleted').addClass("disabled");
+	
+	// Show the "Previous" button on step 4 (in case it had been hidden by the previous results show)
+	$('#from4').show();
+}
+
+function promptNewTestOrOldResultsModal() {
+
+	$('#newTestOrOldResultsModal').modal('setting', 'closable', false).modal('show');
+}
+
+function sendWSMessage(msg) {
+        waitForSocketConnection(WS_CONN, function() {
+            WS_CONN.send(msg);
+        });
+    };
+
+// does not protect against connection handshaking time
+// this should only be used if connection already clearly established previously
+function sendWSMessageRightAway(msg) {
+        if (WS_CONN.readyState === 1) {
+            WS_CONN.send(msg);
+        }
+    };
+
+
+
+function waitForSocketConnection(socket, callback){
+        setTimeout(
+            function(){
+                if (socket.readyState === 1) {
+                    if(callback !== undefined){
+                        callback();
+                    }
+                    return;
+                } else {
+                    waitForSocketConnection(socket,callback);
+                }
+            }, 5);
+    };
+
+
+function isValidURL(str) {
+  var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+    '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
+    '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+    '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+    '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
+    '(\#[-a-z\d_]*)?$','i'); // fragment locater
+  if(!pattern.test(str)) {    
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function htmlEncode(inputVal){  
+  return inputVal
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+</script>
+
+</body>
+</html>
